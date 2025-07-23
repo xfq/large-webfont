@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Large Webfont Loading</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Large webfont that will demonstrate slow loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Loading multiple heavy font families with all weights and styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Large Webfont Loading Perf</h1>
+        <p class="subtitle">Watch how large webfonts impact page loading performance</p>
+    </header>
+
+    <main>
+        <section class="demo-section">
+            <h2>Loading Status</h2>
+            <div class="status-container">
+                <div class="status-item">
+                    <span class="status-label">Page Load:</span>
+                    <span id="page-status" class="status-value loading">Loading...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Fonts Load:</span>
+                    <span id="font-status" class="status-value loading">Loading...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Load Time:</span>
+                    <span id="load-time" class="status-value">Measuring...</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="demo-section">
+            <h2>Font Comparison</h2>
+            <div class="font-demo">
+                <div class="font-example fallback-font">
+                    <h3>System Font (Fast)</h3>
+                    <p>This text uses system fonts that are already available on your device. It loads instantly without any network requests.</p>
+                    <p class="sample-text">The quick brown fox jumps over the lazy dog. 1234567890</p>
+                </div>
+                
+                <div class="font-example webfont-noto">
+                    <h3>Noto Sans (Web Font)</h3>
+                    <p>This text uses Noto Sans loaded from Google Fonts. Notice the delay before the custom font appears.</p>
+                    <p class="sample-text">The quick brown fox jumps over the lazy dog. 1234567890</p>
+                </div>
+                
+                <div class="font-example webfont-jigmo">
+                    <h3>Jigmo (Web Font)</h3>
+                    <p>This text uses the Jigmo font. It is a free Kanji font, including 141,457 glyphs.</p>
+                    <p class="sample-text">一一丁丁丂丂七七丄丄丅丅万万万􀉲􀉳丈丈􀉴丈􀉵三三上上</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="demo-section">
+            <h2>Network Simulation</h2>
+            <div class="network-controls">
+                <p>Open your browser's Developer Tools (F12) → Network tab → Throttling to simulate different connection speeds:</p>
+                <div class="speed-options">
+                    <span class="speed-option">Fast 3G</span>
+                    <span class="speed-option">Slow 3G</span>
+                    <span class="speed-option">Offline</span>
+                </div>
+                <p>Refresh the page to see how font loading performance changes with different network conditions.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Check your browser's Network tab to see the actual download sizes and timing.</p>
+    </footer>
+
+    <script>
+        // Track loading performance
+        const startTime = performance.now();
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('page-status').textContent = 'Loaded';
+            document.getElementById('page-status').className = 'status-value loaded';
+            
+            const domLoadTime = performance.now() - startTime;
+            document.getElementById('load-time').textContent = `${domLoadTime.toFixed(2)}ms (DOM)`;
+        });
+
+        // Check if fonts are loaded
+        document.fonts.ready.then(function() {
+            document.getElementById('font-status').textContent = 'Loaded';
+            document.getElementById('font-status').className = 'status-value loaded';
+            
+            const totalLoadTime = performance.now() - startTime;
+            document.getElementById('load-time').textContent = `${totalLoadTime.toFixed(2)}ms (Total)`;
+        });
+
+        // Add visual feedback for font loading
+        document.fonts.addEventListener('loadingdone', function() {
+            console.log('All fonts loaded');
+        });
+
+        document.fonts.addEventListener('loadingerror', function() {
+            document.getElementById('font-status').textContent = 'Error';
+            document.getElementById('font-status').className = 'status-value error';
+        });
+    </script>
+</body>
+</html>

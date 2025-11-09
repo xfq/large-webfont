@@ -147,7 +147,18 @@ main {
 /* Font face declarations */
 @font-face {
     font-family: 'Jigmo';
+    src: url('fonts/Jigmo.woff2') format('woff2'),
+         url('fonts/Jigmo.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Jigmo-TTF';
     src: url('fonts/Jigmo.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Jigmo-WOFF2';
+    src: url('fonts/Jigmo.woff2') format('woff2');
 }
 
 /* Apply different fonts to demonstrate loading */
@@ -177,6 +188,22 @@ main {
 }
 
 .webfont-jigmo .sample-text {
+    font-weight: normal;
+}
+
+.webfont-jigmo-ttf {
+    font-family: 'Jigmo-TTF';
+}
+
+.webfont-jigmo-ttf .sample-text {
+    font-weight: normal;
+}
+
+.webfont-jigmo-woff2 {
+    font-family: 'Jigmo-WOFF2';
+}
+
+.webfont-jigmo-woff2 .sample-text {
     font-weight: normal;
 }
 
@@ -297,7 +324,9 @@ footer p {
 
 /* Font loading animation effects */
 .webfont-noto,
-.webfont-jigmo {
+.webfont-jigmo,
+.webfont-jigmo-ttf,
+.webfont-jigmo-woff2 {
     opacity: 0;
     animation: fadeInFont 0.5s ease-in-out 0.1s forwards;
 }
